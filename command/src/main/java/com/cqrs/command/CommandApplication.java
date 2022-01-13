@@ -10,7 +10,12 @@ public class CommandApplication {
         SpringApplication.run(CommandApplication.class, args);
     }
 
-    @CommandHandler
+    /**
+     * Application 기동시 AxonServer와 연결을 시도
+     * 연결이 완료되면, 해당 App은 자신이 처리가능한 Command Handler 정보를 Server에 등록
+     * @param command
+     */
+    //@CommandHandler
     protected void test(Object command){
 
     }
