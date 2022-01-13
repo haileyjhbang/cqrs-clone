@@ -25,3 +25,11 @@ axon:
     general: xstream
   axonserver:
     servers: 192.168.35.100:8124
+
+logging:
+  level:
+    com:
+      cqrs:
+        command: debug
+    org:
+      axonframework: debug

@@ -3,6 +3,7 @@ package com.cqrs.command.aggregate;
 import com.cqrs.command.commands.HolderCreationCommand;
 import com.cqrs.events.HolderCreationEvent;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.axonframework.commandhandling.CommandHandler;
 import org.axonframework.eventsourcing.EventSourcingHandler;
 import org.axonframework.modelling.command.AggregateIdentifier;
@@ -11,6 +12,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 
 @RequiredArgsConstructor
 @Aggregate
+@Slf4j
 public class HolderAggregate {
     @AggregateIdentifier
     private String holderID;
@@ -25,6 +27,7 @@ public class HolderAggregate {
      */
     @CommandHandler
     public HolderAggregate(HolderCreationCommand command) {
+        log.debug("handling {}", command);
         //해당 메소드를 통해서 이벤트를 발행
         AggregateLifecycle.apply(new HolderCreationEvent(command.getHolderID(), command.getHolderName(), command.getTel(), command.getAddress()));
     }
@@ -35,6 +38,7 @@ public class HolderAggregate {
      */
     @EventSourcingHandler
     protected void createAccount(HolderCreationEvent event){
+        log.debug("applying {}", event);
         this.holderID = event.getHolderID();
         this.holderName = event.getHolderName();
         this.tel = event.getTel();
