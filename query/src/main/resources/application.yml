@@ -1,0 +1,23 @@
+server:
+  port: 9090
+
+spring:
+  application:
+    name: eventsourcing-cqrs-query
+  datasource:
+    url: jdbc:postgresql://192.168.35.100:5432/query
+    username: query
+    password: query
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  main:
+    allow-circular-references: true
+
+axon:
+  serializer:
+    general: xstream
+  axonserver:
+    servers: 192.168.35.100:8124

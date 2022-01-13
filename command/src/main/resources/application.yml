@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: eventsourcing-cqrs-command
+  datasource:
+    url: jdbc:postgresql://192.168.35.100:5432/command
+    username: command
+    password: command
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  main:
+    allow-circular-references: true
+
+#  sql:
+#    init:
+#      platform: postgres
+
+axon:
+  serializer:
+    general: xstream
+  axonserver:
+    servers: 192.168.35.100:8124
