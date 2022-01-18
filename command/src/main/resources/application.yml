@@ -25,6 +25,10 @@ axon:
     general: xstream
   axonserver:
     servers: 192.168.35.100:8124
+  eventhandling:
+    processors:
+      name:
+        mode: tracking
 
 logging:
   level:
