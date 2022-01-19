@@ -13,8 +13,9 @@ import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@AutoConfigureAfter(AxonAutoConfiguration.class)
+/////////event sourced aggregate 방식
+//@Configuration
+//@AutoConfigureAfter(AxonAutoConfiguration.class)
 public class AxonConfig {
     /**
      * Command 명령 생성과 이를 처리하는 Command Handler를 하나의 App에 모두 구현하였음에도 *
