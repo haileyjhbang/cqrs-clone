@@ -10,6 +10,15 @@ import org.springframework.stereotype.Service;
 public class QueryServiceImpl implements QueryService{
     private final Configuration configuration;
 
+    /**
+     * TrackingEventProcessor
+     * default
+     * Thread 수 : 1개 / 이벤트 하나당 단일 스레드
+     * Batch Size : 1
+     * 최대 Thread 수 : Segment 개수
+     * TokenClaim 주기 : 5000ms
+     * -> 개선 @AxonConfig
+     */
     @Override
     public void reset() {
         configuration.eventProcessingConfiguration()

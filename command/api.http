@@ -2,9 +2,9 @@ POST http://localhost:8080/holder
 Content-Type: application/json
 
 {
-  "holderName" : "kevin",
+  "holderName" : "melvin",
   "tel" : "02-1234-5678",
-  "address" : "OO시 OO구"
+  "address" : "OO시 OO구 hehe"
 }
 
 ###
@@ -13,18 +13,18 @@ POST http://localhost:8080/account
 Content-Type: application/json
 
 {
-  "holderID" : "계정 생성 후 반환되는 UUID"
+  "holderID" : "65cc77b7-6820-472d-ba72-dd942f801f21"
 }
 
-###
+### 0041f839-4ea4-42bf-94ca-6ebcbdaaf2ee
 
 POST http://localhost:8080/deposit
 Content-Type: application/json
 
 {
-  "accountID" : "계좌 생성 후 반환되는 UUID",
-  "holderID" : "계정 생성 후 반환되는 UUID",
-  "amount" : 300
+  "accountID" : "fffb8fa2-94dd-4e84-b7fd-072d09d01d33",
+  "holderID" : "65cc77b7-6820-472d-ba72-dd942f801f21",
+  "amount" : 400
 }
 
 ###
@@ -33,8 +33,8 @@ POST http://localhost:8080/withdrawal
 Content-Type: application/json
 
 {
-  "accountID" : "계좌 생성 후 반환되는 UUID",
-  "holderID" : "계정 생성 후 반환되는 UUID",
+  "accountID" : "fffb8fa2-94dd-4e84-b7fd-072d09d01d33",
+  "holderID" : "65cc77b7-6820-472d-ba72-dd942f801f21",
   "amount" : 10
 }
 
