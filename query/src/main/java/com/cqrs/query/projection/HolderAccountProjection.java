@@ -14,20 +14,20 @@ import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.eventhandling.Timestamp;
 import org.springframework.retry.annotation.Backoff;
-import org.springframework.retry.annotation.EnableRetry;
 import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Component;
 
 import java.time.Instant;
 import java.util.NoSuchElementException;
 
-@EnableRetry
+@Slf4j
 @Component
 @RequiredArgsConstructor
-@Slf4j
 @ProcessingGroup("accounts")
 public class HolderAccountProjection {
     private final AccountRepository repository;
+    private final RetryTemplate retryTemplate;
 
     /**
      * EventHandler 메소드 파라미터에는 @Timestamp 외 @SequenceNumber, ReplayStatus 등이 추가로 전달될 수 있으며
@@ -61,6 +61,20 @@ public class HolderAccountProjection {
         repository.save(holderAccount);
     }
 
+//retryTemplate로 적용
+//    @EventHandler
+//    @AllowReplay
+//    protected void on(AccountCreationEvent event, @Timestamp Instant instant){
+//        log.debug(">>> projecting {} , timestamp : {}", event, instant.toString());
+//        retryTemplate.execute(context -> {
+//            log.info("retry going on");
+//            HolderAccountSummary holderAccount = getHolderAccountSummary(event.getHolderID());
+//            holderAccount.setAccountCnt(holderAccount.getAccountCnt() + 1);
+//            repository.save(holderAccount);
+//            return null;
+//        });
+//    }
+
     @EventHandler
     @AllowReplay
     protected void on(DepositMoneyEvent event, @Timestamp Instant instant){
@@ -89,7 +103,7 @@ public class HolderAccountProjection {
      * 초기화 할 때 실행하는 부분
      */
     @ResetHandler
-    private void resetHolderAccountInfo(){
+    public void resetHolderAccountInfo(){
         log.debug("reset triggered");
         repository.deleteAll();
     }

@@ -14,4 +14,6 @@ dependencies{
     implementation group: 'org.axonframework', name: 'axon-configuration', version: "$axonVersion"
 
     implementation 'org.springframework.retry:spring-retry'
+
+    implementation 'org.dom4j:dom4j:2.1.3'
 }

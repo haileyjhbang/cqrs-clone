@@ -1,3 +1,6 @@
+ext{
+    axonVersion = "4.2.1"
+}
 bootJar {
     enabled = false
 }
@@ -7,4 +10,6 @@ jar {
 dependencies{
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    implementation group: 'org.axonframework', name: 'axon-messaging', version: "$axonVersion"
 }

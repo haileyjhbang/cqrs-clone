@@ -14,4 +14,6 @@ public class HolderCreationCommand {
     private String holderName;
     private String tel;
     private String address;
+    //ch14 추가
+    private String company;
 }

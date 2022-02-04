@@ -32,6 +32,7 @@ public class HolderAggregate {
     private String holderName;
     private String tel;
     private String address;
+    private String company;
 
     /**
      * HolderAggregate는 AccountAggregate와 1:N 관계를 맺고 있으므로 양방향 관계 설정 했으며,
@@ -58,8 +59,9 @@ public class HolderAggregate {
         this.holderName = command.getHolderName();
         this.tel = command.getTel();
         this.address = command.getAddress();
+        this.company = command.getCompany();
 
-        AggregateLifecycle.apply(new HolderCreationEvent(command.getHolderID(), command.getHolderName(), command.getTel(), command.getAddress()));
+        AggregateLifecycle.apply(new HolderCreationEvent(command.getHolderID(), command.getHolderName(), command.getTel(), command.getAddress(), command.getCompany()));
     }
 }
 /////////event sourced aggregate 방식
