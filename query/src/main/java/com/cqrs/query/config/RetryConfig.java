@@ -23,7 +23,7 @@ public class RetryConfig {
         retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
 
         SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
-        retryPolicy.setMaxAttempts(2); //횟수
+        retryPolicy.setMaxAttempts(3); //횟수
         retryTemplate.setRetryPolicy(retryPolicy);
         retryTemplate.registerListener(new RetryListener());
 
@@ -48,5 +48,4 @@ public class RetryConfig {
             log.info(">>>> error on retry");
         }
     }
-
 }
