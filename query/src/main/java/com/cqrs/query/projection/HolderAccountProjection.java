@@ -5,6 +5,7 @@ import com.cqrs.events.DepositMoneyEvent;
 import com.cqrs.events.HolderCreationEvent;
 import com.cqrs.events.WithdrawMoneyEvent;
 import com.cqrs.query.entity.HolderAccountSummary;
+import com.cqrs.query.query.AccountQuery;
 import com.cqrs.query.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,8 @@ import org.axonframework.eventhandling.AllowReplay;
 import org.axonframework.eventhandling.EventHandler;
 import org.axonframework.eventhandling.ResetHandler;
 import org.axonframework.eventhandling.Timestamp;
+import org.axonframework.queryhandling.QueryHandler;
+import org.axonframework.queryhandling.QueryUpdateEmitter;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.retry.support.RetryTemplate;
@@ -28,6 +31,7 @@ import java.util.NoSuchElementException;
 public class HolderAccountProjection {
     private final AccountRepository repository;
     private final RetryTemplate retryTemplate;
+    private final QueryUpdateEmitter queryUpdateEmitter;
 
     /**
      * EventHandler 메소드 파라미터에는 @Timestamp 외 @SequenceNumber, ReplayStatus 등이 추가로 전달될 수 있으며
@@ -81,6 +85,11 @@ public class HolderAccountProjection {
         log.debug(">>> projecting {} , timestamp : {}", event, instant.toString());
         HolderAccountSummary holderAccount = getHolderAccountSummary(event.getHolderID());
         holderAccount.setTotalBalance(holderAccount.getTotalBalance() + event.getAmount());
+
+        queryUpdateEmitter.emit(AccountQuery.class,
+                query -> query.getHolderId().equals(event.getHolderID()),
+                holderAccount);
+
         repository.save(holderAccount);
     }
 
@@ -90,6 +99,11 @@ public class HolderAccountProjection {
         log.debug(">>> projecting {} , timestamp : {}", event, instant.toString());
         HolderAccountSummary holderAccount = getHolderAccountSummary(event.getHolderID());
         holderAccount.setTotalBalance(holderAccount.getTotalBalance() - event.getAmount());
+
+        queryUpdateEmitter.emit(AccountQuery.class,
+                query -> query.getHolderId().equals(event.getHolderID()),
+                holderAccount);
+
         repository.save(holderAccount);
     }
 
@@ -107,4 +121,19 @@ public class HolderAccountProjection {
         log.debug("reset triggered");
         repository.deleteAll();
     }
+
+    @QueryHandler
+    public HolderAccountSummary on3(AccountQuery query){
+        log.debug(">>> handling fake {}", query);
+        HolderAccountSummary res = new HolderAccountSummary();
+        res.setName("test");
+        return res;
+    }
+
+    @QueryHandler
+    public HolderAccountSummary on2(AccountQuery query){
+        log.debug(">>> handling queryHandler {}", query);
+        return repository.findByHolderId(query.getHolderId()).orElse(null);
+    }
+
 }
