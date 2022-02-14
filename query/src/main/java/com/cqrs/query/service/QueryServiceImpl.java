@@ -1,7 +1,10 @@
 package com.cqrs.query.service;
 
+import com.cqrs.loan.LoanLimitQuery;
+import com.cqrs.loan.LoanLimitResult;
 import com.cqrs.query.entity.HolderAccountSummary;
 import com.cqrs.query.query.AccountQuery;
+import com.cqrs.query.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.axonframework.config.Configuration;
@@ -12,12 +15,17 @@ import org.axonframework.queryhandling.SubscriptionQueryResult;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
+import java.util.List;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
 public class QueryServiceImpl implements QueryService{
     private final Configuration configuration;
     private final QueryGateway queryGateway;
+    private final AccountRepository repository;
 
     /**
      * TrackingEventProcessor
@@ -69,5 +77,22 @@ public class QueryServiceImpl implements QueryService{
                     .doOnComplete(emitter::complete)
                     .subscribe(emitter::next);
         });
+    }
+
+    /**
+     * Scatter-Gather 쿼리는 단일 App에 요청하는 것이 아니므로, 만약 Handler 처리 App에 장애가 발생한다면 무한정 대기할 수 있습니다.
+     * 따라서 요청시, DeadLine을 정하여 요청시간 만큼만 대기할 수 있도록 지정이 필요합니다.
+     * @param holderId
+     * @return
+     */
+    @Override
+    public List<LoanLimitResult> getAccountInfoScatterGather(String holderId) {
+        HolderAccountSummary accountSummary = repository.findByHolderId(holderId).orElseThrow();
+
+        return queryGateway
+                .scatterGather(new LoanLimitQuery(accountSummary.getHolderId(), accountSummary.getTotalBalance()),
+                        ResponseTypes.instanceOf(LoanLimitResult.class),
+                        30, TimeUnit.SECONDS)
+                .collect(Collectors.toList());
     }
 }

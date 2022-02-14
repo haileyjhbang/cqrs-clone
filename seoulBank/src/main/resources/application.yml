@@ -1,0 +1,22 @@
+server:
+  port: 9092
+
+spring:
+  application:
+    name: eventsourcing-cqrs-seoulBank
+  main:
+    allow-circular-references: true
+
+axon:
+  serializer:
+    general: xstream
+  axonserver:
+    servers: 192.168.35.100:8124
+
+logging:
+  level:
+    com:
+      cqrs:
+        seoul: debug
+    org:
+      axonframework: debug

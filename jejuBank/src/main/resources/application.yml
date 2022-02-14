@@ -1,0 +1,21 @@
+server:
+  port: 9091
+
+spring:
+  application:
+    name: eventsourcing-cqrs-jejuBank
+  main:
+    allow-circular-references: true
+axon:
+  serializer:
+    general: xstream
+  axonserver:
+    servers: 192.168.35.100:8124
+
+logging:
+  level:
+    com:
+      cqrs:
+        jeju: debug
+    org:
+      axonframework: debug
