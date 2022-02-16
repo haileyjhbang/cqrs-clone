@@ -17,7 +17,7 @@ import org.axonframework.spring.stereotype.Aggregate;
 
 import javax.persistence.*;
 
-//////////state stored aggregate 방식
+//////////state stored aggregate 방식: Event의 적재와 별개로 모델의 최신 상태를 DB에 저장하는 방식
 @NoArgsConstructor
 @AllArgsConstructor
 @Slf4j
@@ -54,6 +54,21 @@ public class AccountAggregate {
         AggregateLifecycle.apply(new AccountCreationEvent(holder.getHolderID(), command.getAccountID()));
     }
 
+    //같은 input의 command handler가 복수개면
+    //1. return 값이 있는 것이 먼저인 것 같고
+    //2. 이름은 별로 안 중요한 것 같고
+    //3. 나중에 등록된 것을 따라간다는데 뭐가 나중인지 판단을 못하겠음
+    //3-1. 수정시간도 아닌 것 같고 약간 랜덤같은 느낌..
+    //근데 왜 워닝이 안 뜨지?
+//    @CommandHandler
+//    protected void depositMoney4(DepositMoneyCommand command){
+//        log.debug("+++2 handling {}", command);
+//        if(command.getAmount() <= 0) throw new IllegalStateException("amount >= 0");
+//        this.balance += command.getAmount();
+//        log.debug("balance {}", this.balance);
+//        AggregateLifecycle.apply(new DepositMoneyEvent(command.getHolderID(), command.getAccountID(), command.getAmount()));
+//    }
+
     @CommandHandler
     protected void depositMoney(DepositMoneyCommand command){
         log.debug(">>> handling {}", command);
@@ -62,6 +77,7 @@ public class AccountAggregate {
         log.debug("balance {}", this.balance);
         AggregateLifecycle.apply(new DepositMoneyEvent(command.getHolderID(), command.getAccountID(), command.getAmount()));
     }
+
 
     @CommandHandler
     protected void withdrawMoney(WithdrawMoneyCommand command){
@@ -73,7 +89,7 @@ public class AccountAggregate {
         AggregateLifecycle.apply(new WithdrawMoneyEvent(command.getHolderID(), command.getAccountID(), command.getAmount()));
     }
 }
-/////////event sourced aggregate 방식
+/////////event sourced aggregate 방식: EventStore로부터 Event를 재생하면서 모델의 최신상태를 만드는 방식
 
 //import com.cqrs.command.commands.AccountCreationCommand;
 //import com.cqrs.command.commands.DepositMoneyCommand;

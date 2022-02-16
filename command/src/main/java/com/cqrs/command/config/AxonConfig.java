@@ -18,7 +18,7 @@ import org.springframework.context.annotation.Configuration;
 //@AutoConfigureAfter(AxonAutoConfiguration.class)
 public class AxonConfig {
     /**
-     * Command 명령 생성과 이를 처리하는 Command Handler를 하나의 App에 모두 구현하였음에도 *
+     * Command 명령 생성과 이를 처리하는 Command Handler를 하나의 App에 모두 구현하였음에도
      * 현 Application에서는 Command 발행 시 Axon Server와의 통신을 수행합니다.
      * 이는 AxonServer와 연결 시 기본적으로 AxonServerCommandBus를 사용하기 때문입니다.
      *

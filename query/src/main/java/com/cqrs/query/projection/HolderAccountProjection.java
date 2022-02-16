@@ -37,6 +37,7 @@ public class HolderAccountProjection {
      * EventHandler 메소드 파라미터에는 @Timestamp 외 @SequenceNumber, ReplayStatus 등이 추가로 전달될 수 있으며
      * 자세한 내용은 Axon 공식 문서를 참고 바랍니다.
      *
+     * 계정 생성 시 초기값 설정하여 저장하는 부분
      * @param event
      * @param instant
      */
@@ -100,6 +101,7 @@ public class HolderAccountProjection {
         HolderAccountSummary holderAccount = getHolderAccountSummary(event.getHolderID());
         holderAccount.setTotalBalance(holderAccount.getTotalBalance() - event.getAmount());
 
+        //Subscription query 방식에서는 Read Model에 변경이 발생되었을 때 이를 전파해야합니다.
         queryUpdateEmitter.emit(AccountQuery.class,
                 query -> query.getHolderId().equals(event.getHolderID()),
                 holderAccount);
