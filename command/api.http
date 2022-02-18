@@ -2,7 +2,7 @@ POST http://localhost:8080/holder
 Content-Type: application/json
 
 {
-  "holderName" : "ch19",
+  "holderName" : "ch19-state-store",
   "tel" : "111-222-333",
   "address" : "USA",
   "company" : "nhn"
@@ -14,7 +14,7 @@ POST http://localhost:8080/account
 Content-Type: application/json
 
 {
-  "holderID" : "98228ee7-9571-4c52-8023-2137c889abd0"
+  "holderID" : "5bddd703-cae3-4d6f-a0b0-80f4e0e33f38"
 }
 
 ### 0041f839-4ea4-42bf-94ca-6ebcbdaaf2ee
@@ -46,7 +46,7 @@ Content-Type: application/json
 
 {
 	"srcAccountID" : "test-sender",
-	"dstAccountID" : "5c3bb536-217b-45f1-adbf-edcc3f0a6c05",
-	"amount" : 10,
+	"dstAccountID" : "fd9f5bd5-740f-4535-a16a-a28b84d89926",
+	"amount" : 150,
 	"bankType" : "JEJU"
 }

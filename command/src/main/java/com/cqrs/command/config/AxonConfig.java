@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /////////event sourced aggregate 방식
-@Configuration
-@AutoConfigureAfter(AxonAutoConfiguration.class)
+//@Configuration
+//@AutoConfigureAfter(AxonAutoConfiguration.class)
 public class AxonConfig {
     /**
      * Command 명령 생성과 이를 처리하는 Command Handler를 하나의 App에 모두 구현하였음에도
@@ -34,40 +34,40 @@ public class AxonConfig {
         return SimpleCommandBus.builder().transactionManager(transactionManager).build();
     }
 ///////////snapshot
-    @Bean
-    public AggregateFactory<AccountAggregate> aggregateFactory(){
-        return new GenericAggregateFactory<>(AccountAggregate.class);
-    }
-
-    @Bean
-    public Snapshotter snapshotter(EventStore eventStore, TransactionManager transactionManager){
-        return AggregateSnapshotter
-                .builder()
-                .eventStore(eventStore)
-                .aggregateFactories(aggregateFactory())
-                .transactionManager(transactionManager)
-                .build();
-    }
-
-    @Bean
-    public SnapshotTriggerDefinition snapshotTriggerDefinition(EventStore eventStore, TransactionManager transactionManager){
-        //이벤트 5개부터 스냅샵
-        final int SNAPSHOT_THRESHOLD = 5;
-        return new EventCountSnapshotTriggerDefinition(snapshotter(eventStore,transactionManager), SNAPSHOT_THRESHOLD);
-    }
-
-    @Bean
-    public Repository<AccountAggregate> accountAggregateRepository(EventStore eventStore, SnapshotTriggerDefinition snapshotTriggerDefinition, Cache cache){
-        return EventSourcingRepository
-                .builder(AccountAggregate.class)
-                .eventStore(eventStore)
-                .snapshotTriggerDefinition(snapshotTriggerDefinition)
-                .cache(cache)
-                .build();
-    }
-///////////snapshot
-    @Bean
-    public Cache cache(){
-        return new WeakReferenceCache();
-    }
+//    @Bean
+//    public AggregateFactory<AccountAggregate> aggregateFactory(){
+//        return new GenericAggregateFactory<>(AccountAggregate.class);
+//    }
+//
+//    @Bean
+//    public Snapshotter snapshotter(EventStore eventStore, TransactionManager transactionManager){
+//        return AggregateSnapshotter
+//                .builder()
+//                .eventStore(eventStore)
+//                .aggregateFactories(aggregateFactory())
+//                .transactionManager(transactionManager)
+//                .build();
+//    }
+//
+//    @Bean
+//    public SnapshotTriggerDefinition snapshotTriggerDefinition(EventStore eventStore, TransactionManager transactionManager){
+//        //이벤트 5개부터 스냅샵
+//        final int SNAPSHOT_THRESHOLD = 5;
+//        return new EventCountSnapshotTriggerDefinition(snapshotter(eventStore,transactionManager), SNAPSHOT_THRESHOLD);
+//    }
+//
+//    @Bean
+//    public Repository<AccountAggregate> accountAggregateRepository(EventStore eventStore, SnapshotTriggerDefinition snapshotTriggerDefinition, Cache cache){
+//        return EventSourcingRepository
+//                .builder(AccountAggregate.class)
+//                .eventStore(eventStore)
+//                .snapshotTriggerDefinition(snapshotTriggerDefinition)
+//                .cache(cache)
+//                .build();
+//    }
+/////////////snapshot
+//    @Bean
+//    public Cache cache(){
+//        return new WeakReferenceCache();
+//    }
 }
