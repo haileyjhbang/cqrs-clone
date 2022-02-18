@@ -91,11 +91,22 @@ public class AccountAggregate {
     @CommandHandler
     protected void transferMoney(MoneyTransferCommand command){
         log.debug(">>> handling {}", command);
-        if(command.getAmount() <= 0) throw new IllegalStateException("amount >= 0");
+        //제주 -> command 기 때문에 잔액 검사 필요 없음
+        AggregateLifecycle.apply(MoneyTransferEvent.builder()
+                .srcAccountID(command.getSrcAccountID())
+                .dstAccountID(command.getDstAccountID())
+                .amount(command.getAmount())
+                .commandFactory(command.getBankType().getCommandFactory(command))
+                .transferID(command.getTransferID())
+                .build());
+
+    }
+    @CommandHandler
+    protected void transferMoney(TransferApprovedCommand command){
         this.balance += command.getAmount();
         log.debug("=== balance {}", this.balance);
-        AggregateLifecycle.apply(new DepositMoneyEvent(this.holder.getHolderID(), command.getDstAccountID(), command.getAmount()));
-        AggregateLifecycle.apply(new DepositCompletedEvent(command.getDstAccountID(), command.getTransferID()));
+        AggregateLifecycle.apply(new DepositMoneyEvent(this.holder.getHolderID(), command.getAccountID(), command.getAmount()));
+        AggregateLifecycle.apply(new DepositCompletedEvent(command.getAccountID(), command.getTransferID()));
     }
 }
 /////////event sourced aggregate 방식: EventStore로부터 Event를 재생하면서 모델의 최신상태를 만드는 방식

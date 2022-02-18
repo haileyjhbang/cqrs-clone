@@ -29,7 +29,7 @@ public class TransferManager {
     @SagaEventHandler(associationProperty = "transferID")
     protected void on(MoneyTransferEvent event) {
         log.debug("Created saga instance");
-        log.debug("event : {}", event);
+        log.debug(">>> event : {}", event);
         commandFactory = event.getCommandFactory();
         SagaLifecycle.associateWith("srcAccountID", event.getSrcAccountID());
 
