@@ -1,4 +1,4 @@
-package com.cqrs.events;
+package com.cqrs.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

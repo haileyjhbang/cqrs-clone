@@ -4,6 +4,15 @@ server:
 spring:
   application:
     name: eventsourcing-cqrs-jejuBank
+  datasource:
+    url: jdbc:postgresql://192.168.35.100:5432/jeju
+    username: jeju
+    password: jeju
+    driverClassName: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
   main:
     allow-circular-references: true
 axon:

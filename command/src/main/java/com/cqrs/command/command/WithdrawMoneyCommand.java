@@ -1,4 +1,4 @@
-package com.cqrs.command.commands;
+package com.cqrs.command.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,12 +8,9 @@ import org.axonframework.modelling.command.TargetAggregateIdentifier;
 @AllArgsConstructor
 @ToString
 @Getter
-public class HolderCreationCommand {
+public class WithdrawMoneyCommand {
     @TargetAggregateIdentifier
+    private String accountID;
     private String holderID;
-    private String holderName;
-    private String tel;
-    private String address;
-    //ch14 추가
-    private String company;
+    private Long amount;
 }

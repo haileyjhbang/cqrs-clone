@@ -2,10 +2,10 @@ POST http://localhost:8080/holder
 Content-Type: application/json
 
 {
-  "holderName" : "ch13",
-  "tel" : "02-1234-5678",
-  "address" : "OO시 OO구 heheqq",
-  "company" : "konai"
+  "holderName" : "ch19",
+  "tel" : "111-222-333",
+  "address" : "USA",
+  "company" : "nhn"
 }
 
 ###
@@ -14,7 +14,7 @@ POST http://localhost:8080/account
 Content-Type: application/json
 
 {
-  "holderID" : "e5775054-4265-46ef-8116-297ac22f480d"
+  "holderID" : "98228ee7-9571-4c52-8023-2137c889abd0"
 }
 
 ### 0041f839-4ea4-42bf-94ca-6ebcbdaaf2ee
@@ -25,7 +25,7 @@ Content-Type: application/json
 {
   "accountID" : "37ddb7c8-0d3b-443d-a6d5-c83d873f0521",
   "holderID" : "e5775054-4265-46ef-8116-297ac22f480d",
-  "amount" : 4000
+  "amount" : 400
 }
 
 ###
@@ -35,8 +35,18 @@ Content-Type: application/json
 
 {
   "accountID" : "fffb8fa2-94dd-4e84-b7fd-072d09d01d33",
-  "holderID" : "65cc77b7-6820-472d-ba72-dd942f801f21",
+  "holderID" : "e5775054-4265-46ef-8116-297ac22f480d",
   "amount" : 10
 }
 
 ###
+
+POST http://localhost:8080/transfer
+Content-Type: application/json
+
+{
+	"srcAccountID" : "test-sender",
+	"dstAccountID" : "5c3bb536-217b-45f1-adbf-edcc3f0a6c05",
+	"amount" : 10,
+	"bankType" : "JEJU"
+}

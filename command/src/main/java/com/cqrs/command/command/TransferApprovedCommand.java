@@ -1,16 +1,16 @@
-package com.cqrs.command.commands;
+package com.cqrs.command.command;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
 import org.axonframework.modelling.command.TargetAggregateIdentifier;
 
-@AllArgsConstructor
 @ToString
 @Getter
-public class WithdrawMoneyCommand {
+@Builder
+public class TransferApprovedCommand {
     @TargetAggregateIdentifier
     private String accountID;
-    private String holderID;
     private Long amount;
+    private String transferID;
 }

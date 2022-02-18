@@ -1,4 +1,4 @@
-package com.cqrs.command.commands;
+package com.cqrs.command.command;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

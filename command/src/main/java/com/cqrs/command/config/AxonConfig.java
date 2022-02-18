@@ -14,8 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /////////event sourced aggregate 방식
-//@Configuration
-//@AutoConfigureAfter(AxonAutoConfiguration.class)
+@Configuration
+@AutoConfigureAfter(AxonAutoConfiguration.class)
 public class AxonConfig {
     /**
      * Command 명령 생성과 이를 처리하는 Command Handler를 하나의 App에 모두 구현하였음에도
@@ -28,7 +28,8 @@ public class AxonConfig {
      * @param transactionManager
      * @return
      */
-    @Bean
+    //19강에서 saga 구현 중 axon server와 통신을 위해 주석처리
+    //@Bean
     SimpleCommandBus commandBus(TransactionManager transactionManager){
         return SimpleCommandBus.builder().transactionManager(transactionManager).build();
     }
@@ -56,12 +57,12 @@ public class AxonConfig {
     }
 
     @Bean
-    public Repository<AccountAggregate> accountAggregateRepository(EventStore eventStore, SnapshotTriggerDefinition snapshotTriggerDefinition){
+    public Repository<AccountAggregate> accountAggregateRepository(EventStore eventStore, SnapshotTriggerDefinition snapshotTriggerDefinition, Cache cache){
         return EventSourcingRepository
                 .builder(AccountAggregate.class)
                 .eventStore(eventStore)
                 .snapshotTriggerDefinition(snapshotTriggerDefinition)
-                .cache(cache())
+                .cache(cache)
                 .build();
     }
 ///////////snapshot

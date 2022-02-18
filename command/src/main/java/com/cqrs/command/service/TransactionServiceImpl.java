@@ -1,14 +1,8 @@
 package com.cqrs.command.service;
 
 import com.cqrs.command.aggregate.HolderAggregate;
-import com.cqrs.command.commands.AccountCreationCommand;
-import com.cqrs.command.commands.DepositMoneyCommand;
-import com.cqrs.command.commands.HolderCreationCommand;
-import com.cqrs.command.commands.WithdrawMoneyCommand;
-import com.cqrs.command.dto.AccountDTO;
-import com.cqrs.command.dto.DepositDTO;
-import com.cqrs.command.dto.HolderDTO;
-import com.cqrs.command.dto.WithdrawalDTO;
+import com.cqrs.command.command.*;
+import com.cqrs.command.dto.*;
 import com.cqrs.command.repository.HolderRepository;
 import lombok.RequiredArgsConstructor;
 import org.axonframework.commandhandling.gateway.CommandGateway;
@@ -21,7 +15,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class TransactionServiceImpl implements TransactionService {
     private final CommandGateway commandGateway;
-    private final HolderRepository holders;
+    //private final HolderRepository holders;
     /**
      * send 메소드는 비동기 방식이며, sendAndWait은 동기 방식의 메소드
      * 동기 방식의 sendAndWait 는 default가 응답이 올때까지 대기하며 이는 호출 후 hang 상태가 지속되면 스레드 고갈이 일어날 수 있음
@@ -39,12 +33,17 @@ public class TransactionServiceImpl implements TransactionService {
         );
     }
 
+//    @Override
+//    public CompletableFuture<String> createAccount(AccountDTO accountDTO) {
+//        HolderAggregate holder = holders.findHolderAggregateByHolderID(accountDTO.getHolderID())
+//            .orElseThrow( () -> new IllegalAccessError("계정 ID가 올바르지 않습니다."));
+//       // return commandGateway.send(new AccountCreationCommand(UUID.randomUUID().toString(), holder));
+//        return commandGateway.send(new AccountCreationCommand(accountDTO.getHolderID(), UUID.randomUUID().toString()));
+//    }
+
     @Override
     public CompletableFuture<String> createAccount(AccountDTO accountDTO) {
-        HolderAggregate holder = holders.findHolderAggregateByHolderID(accountDTO.getHolderID())
-            .orElseThrow( () -> new IllegalAccessError("계정 ID가 올바르지 않습니다."));
-        return commandGateway.send(new AccountCreationCommand(UUID.randomUUID().toString(), holder));
-       // return commandGateway.send(new AccountCreationCommand(accountDTO.getHolderID(), UUID.randomUUID().toString()));
+        return commandGateway.send(new AccountCreationCommand(UUID.randomUUID().toString(),accountDTO.getHolderID()));
     }
 
     @Override
@@ -55,5 +54,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public CompletableFuture<String> withdrawMoney(WithdrawalDTO transactionDTO) {
         return commandGateway.send(new WithdrawMoneyCommand(transactionDTO.getAccountID(), transactionDTO.getHolderID(), transactionDTO.getAmount()));
+    }
+
+    //saga
+    @Override
+    public String transferMoney(TransferDTO transferDTO) {
+        return commandGateway.sendAndWait(MoneyTransferCommand.of(transferDTO));
     }
 }

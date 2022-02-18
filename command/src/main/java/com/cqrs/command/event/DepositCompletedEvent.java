@@ -1,4 +1,4 @@
-package com.cqrs.events;
+package com.cqrs.command.event;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,8 +7,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Getter
-public class WithdrawMoneyEvent {
-    private String holderID;
+public class DepositCompletedEvent {
     private String accountID;
-    private Long amount;
+    private String transferID;
 }

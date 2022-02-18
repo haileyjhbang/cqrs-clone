@@ -1,6 +1,6 @@
 package com.cqrs.query.version;
 
-import com.cqrs.events.HolderCreationEvent;
+import com.cqrs.event.HolderCreationEvent;
 import org.axonframework.serialization.SimpleSerializedType;
 import org.axonframework.serialization.upcasting.event.IntermediateEventRepresentation;
 import org.axonframework.serialization.upcasting.event.SingleEventUpcaster;

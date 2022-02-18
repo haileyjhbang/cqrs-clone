@@ -1,9 +1,9 @@
 package com.cqrs.query.projection;
 
-import com.cqrs.events.AccountCreationEvent;
-import com.cqrs.events.DepositMoneyEvent;
-import com.cqrs.events.HolderCreationEvent;
-import com.cqrs.events.WithdrawMoneyEvent;
+import com.cqrs.event.AccountCreationEvent;
+import com.cqrs.event.DepositMoneyEvent;
+import com.cqrs.event.HolderCreationEvent;
+import com.cqrs.event.WithdrawMoneyEvent;
 import com.cqrs.query.entity.HolderAccountSummary;
 import com.cqrs.query.query.AccountQuery;
 import com.cqrs.query.repository.AccountRepository;

@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository
-public interface HolderRepository extends JpaRepository<HolderAggregate, String> {
-    Optional<HolderAggregate> findHolderAggregateByHolderID(String id);
-}
+//@Repository
+//public interface HolderRepository extends JpaRepository<HolderAggregate, String> {
+//    Optional<HolderAggregate> findHolderAggregateByHolderID(String id);
+//}
