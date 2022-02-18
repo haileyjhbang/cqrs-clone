@@ -3,7 +3,7 @@ package com.cqrs.command.transfer;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
-public class TransferCommandFactory {
+public class TransferComamndFactory {
     private final AbstractTransferCommand transferCommand;
     private final AbstractCancelTransferCommand abortTransferCommand;
     private final AbstractCompensationCancelCommand compensationAbortCommand;
@@ -20,7 +20,6 @@ public class TransferCommandFactory {
     public AbstractCancelTransferCommand getAbortTransferCommand(){
         return this.abortTransferCommand;
     }
-    //복구
     public AbstractCompensationCancelCommand getCompensationAbortCommand(){
         return this.compensationAbortCommand;
     }

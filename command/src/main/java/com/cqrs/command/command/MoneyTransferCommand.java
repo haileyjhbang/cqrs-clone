@@ -1,9 +1,7 @@
 package com.cqrs.command.command;
 
 import com.cqrs.command.dto.TransferDTO;
-import com.cqrs.command.transfer.JejuBankTransferCommand;
-import com.cqrs.command.transfer.SeoulBankTransferCommand;
-import com.cqrs.command.transfer.TransferCommandFactory;
+import com.cqrs.command.transfer.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.ToString;
@@ -24,8 +22,8 @@ public class MoneyTransferCommand {
     private BankType bankType;
 
     public enum BankType{
-        JEJU(command -> new TransferCommandFactory(new JejuBankTransferCommand())),
-        SEOUL(command -> new TransferCommandFactory(new SeoulBankTransferCommand()))
+        JEJU(command -> new TransferCommandFactory(new JejuBankTransferCommand(), new JejuBankCancelTransferCommand(), new JejuBankCompensationCancelCommand())),
+        SEOUL(command -> new TransferCommandFactory(new SeoulBankTransferCommand(), new SeoulBankCancelTransferCommand(), new SeoulBankCompensationCancelCommand()))
         ;
 
         //Function <input, output>
@@ -36,7 +34,7 @@ public class MoneyTransferCommand {
 
         public TransferCommandFactory getCommandFactory(MoneyTransferCommand command){
             TransferCommandFactory factory = this.expression.apply(command);
-            factory.create(command.getSrcAccountID(), command.getDstAccountID(), command.amount, command.getTransferID());
+            factory.create(command.getSrcAccountID(), command.getDstAccountID(), command.getAmount(), command.getTransferID());
             return factory;
         }
     }

@@ -91,7 +91,7 @@ public class AccountAggregate {
     @CommandHandler
     protected void transferMoney(MoneyTransferCommand command){
         log.debug(">>> handling {}", command);
-        //제주 -> command 기 때문에 잔액 검사 필요 없음
+        //제주 -> command 때문에 잔액 검사 필요 없음
         AggregateLifecycle.apply(MoneyTransferEvent.builder()
                 .srcAccountID(command.getSrcAccountID())
                 .dstAccountID(command.getDstAccountID())
@@ -103,6 +103,7 @@ public class AccountAggregate {
     }
     @CommandHandler
     protected void transferMoney(TransferApprovedCommand command){
+        log.debug("=======balance before {}", this.balance);
         this.balance += command.getAmount();
         log.debug("=== balance {}", this.balance);
         AggregateLifecycle.apply(new DepositMoneyEvent(this.holder.getHolderID(), command.getAccountID(), command.getAmount()));
